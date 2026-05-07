@@ -1,0 +1,3 @@
+# Cloud Misconfiguration Scanner uses only Python 3.8+ stdlib.
+# Optional dev dependency:
+#   pytest >= 7  (only if you prefer pytest over the bundled unittest)

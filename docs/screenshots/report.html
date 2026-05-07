@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Cloud Misconfig Scanner — demo</title>
+<style>
+:root{--bg:#0b0f14;--p:#11161d;--b:#1f2937;--t:#e5e7eb;--m:#9ca3af;--a:#60a5fa}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--t);font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,sans-serif;padding:32px}
+h1{font-size:22px;margin-bottom:4px}
+.meta{color:var(--m);font-size:13px;margin-bottom:20px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.tile{background:var(--p);border:1px solid var(--b);padding:16px;border-radius:8px}
+.tile .v{font-size:28px;font-weight:700;color:var(--a)}
+.tile .l{font-size:11px;color:var(--m);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.drift{background:var(--p);border:1px solid var(--b);padding:16px;border-radius:8px;margin-bottom:24px}
+.drift h2{font-size:14px;margin-bottom:10px}
+.drift-row{display:flex;gap:12px}
+.drift-stat{flex:1;background:#0a0d12;padding:12px;border-radius:6px;text-align:center}
+.drift-stat .n{font-size:22px;font-weight:700}
+.drift-stat.new .n{color:#ff9500}
+.drift-stat.closed .n{color:#34d399}
+.drift-stat.unchanged .n{color:var(--m)}
+.cards{display:grid;gap:10px}
+.card{background:var(--p);border:1px solid var(--b);padding:14px 16px;border-radius:8px}
+.card-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.badge{font-size:10px;color:#000;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:1px}
+.ctrl{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--m)}
+.cloud{margin-left:auto;font-size:10px;color:var(--a);letter-spacing:1.5px}
+.card-title{font-weight:600;margin-bottom:4px}
+.card-resource code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#fbbf24;background:rgba(251,191,36,.06);padding:1px 6px;border-radius:3px}
+.card-detail{color:var(--m);font-size:13px;margin:6px 0}
+.card-fix{color:#34d399;font-size:13px}
+</style></head>
+<body>
+<h1>Cloud Misconfig Scanner — <em>demo</em></h1>
+<div class="meta">Generated 2026-05-07 16:27:11 UTC · 79 findings · 79 resources scanned</div>
+<div class="summary">
+  <div class="tile"><div class="v">12</div><div class="l">Critical</div></div>
+  <div class="tile"><div class="v">24</div><div class="l">High</div></div>
+  <div class="tile"><div class="v">28</div><div class="l">Medium</div></div>
+  <div class="tile"><div class="v">15</div><div class="l">Low</div></div>
+</div>
+
+        <section class="drift">
+          <h2>Drift since last baseline</h2>
+          <div class="drift-row">
+            <div class="drift-stat new"><div class="n">0</div><div>NEW</div></div>
+            <div class="drift-stat closed"><div class="n">0</div><div>CLOSED</div></div>
+            <div class="drift-stat unchanged"><div class="n">79</div><div>UNCHANGED</div></div>
+          </div>
+        </section>
+<div class="cards">
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS AWS 1.4</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Root account has access keys</div>
+          <div class="card-resource"><code>iam:root</code></div>
+          <div class="card-detail">Root user has active programmatic access keys.</div>
+          <div class="card-fix">→ Delete root access keys; use IAM users with MFA.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS AWS 1.5</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Root account MFA disabled</div>
+          <div class="card-resource"><code>iam:root</code></div>
+          <div class="card-detail">Root account does not have MFA enabled.</div>
+          <div class="card-fix">→ Enable hardware or virtual MFA for the root user.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS AWS 1.16</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">IAM policy with Action:* + Resource:*</div>
+          <div class="card-resource"><code>iam:policy/legacy-admin</code></div>
+          <div class="card-detail">Policy grants full admin (effectively *:*).</div>
+          <div class="card-fix">→ Scope down to least-privilege actions and resources.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS AWS 2.1.5</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">S3 Block Public Access not enforced</div>
+          <div class="card-resource"><code>s3:bucket/customer-data-prod</code></div>
+          <div class="card-detail">Bucket-level Block Public Access disabled.</div>
+          <div class="card-fix">→ Enable all four BlockPublicAccess settings.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS AWS 2.3.3</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">RDS instance publicly accessible</div>
+          <div class="card-resource"><code>rds:db/billing-prod</code></div>
+          <div class="card-detail">PubliclyAccessible=true exposes DB to internet.</div>
+          <div class="card-fix">→ Set PubliclyAccessible=false; use VPC peering/SGs.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS AWS 3.1</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">No multi-region CloudTrail trail</div>
+          <div class="card-resource"><code>cloudtrail:account</code></div>
+          <div class="card-detail">No active multi-region trail with logging on.</div>
+          <div class="card-fix">→ Create a multi-region trail with management events.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS AWS 5.2</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Security group exposes SSH (22) to 0.0.0.0/0</div>
+          <div class="card-resource"><code>sg:sg-aaa1</code></div>
+          <div class="card-detail">Public ingress on port 22.</div>
+          <div class="card-fix">→ Restrict 22 to bastion/VPN CIDRs only.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS AWS 5.3</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Security group exposes RDP (3389) to 0.0.0.0/0</div>
+          <div class="card-resource"><code>sg:sg-aaa1</code></div>
+          <div class="card-detail">Public ingress on port 3389.</div>
+          <div class="card-fix">→ Restrict 3389 to bastion/VPN CIDRs only.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS Azure 1.3</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Privileged user without MFA</div>
+          <div class="card-resource"><code>entra:user/ga@contoso.com</code></div>
+          <div class="card-detail">Global / Privileged Role admin lacks MFA.</div>
+          <div class="card-fix">→ Require MFA via CA on Directory Roles.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS Azure 3.5</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Storage account allows public blobs</div>
+          <div class="card-resource"><code>storage:stcontosoprod</code></div>
+          <div class="card-detail">allowBlobPublicAccess=true.</div>
+          <div class="card-fix">→ Set allowBlobPublicAccess=false at account level.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS Azure 6.1</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">NSG exposes SSH (22) to Internet</div>
+          <div class="card-resource"><code>nsg:nsg-web</code></div>
+          <div class="card-detail">Rule allow-ssh allows 22 from *.</div>
+          <div class="card-fix">→ Restrict to specific source CIDRs / Bastion.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff3b30">CRITICAL</span>
+            <span class="ctrl">CIS Azure 6.2</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">NSG exposes RDP (3389) to Internet</div>
+          <div class="card-resource"><code>nsg:nsg-web</code></div>
+          <div class="card-detail">Rule allow-rdp allows 3389 from *.</div>
+          <div class="card-fix">→ Restrict to specific source CIDRs / Bastion.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 1.14</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Access key not rotated in 90 days</div>
+          <div class="card-resource"><code>iam:user/&lt;root&gt;/key/AKIA...EXAMPLE1</code></div>
+          <div class="card-detail">Key age 412 days.</div>
+          <div class="card-fix">→ Rotate keys at least every 90 days.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 1.14</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Access key not rotated in 90 days</div>
+          <div class="card-resource"><code>iam:user/deploy.bot/key/AKIA...EXAMPLE2</code></div>
+          <div class="card-detail">Key age 380 days.</div>
+          <div class="card-fix">→ Rotate keys at least every 90 days.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 1.19</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Expired SSL/TLS certificate in IAM/ACM</div>
+          <div class="card-resource"><code>acm:certificate/arn:aws:acm:us-east-1:111:certificate/old</code></div>
+          <div class="card-detail">Certificate expired and still attached.</div>
+          <div class="card-fix">→ Remove expired certs or renew via ACM.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 1.22</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">User has AdministratorAccess attached directly</div>
+          <div class="card-resource"><code>iam:user/deploy.bot</code></div>
+          <div class="card-detail">AdministratorAccess attached to user, not group/role.</div>
+          <div class="card-fix">→ Use roles for admin access; require MFA + STS.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 2.1.1</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">S3 bucket without default encryption</div>
+          <div class="card-resource"><code>s3:bucket/customer-data-prod</code></div>
+          <div class="card-detail">Default encryption not configured.</div>
+          <div class="card-fix">→ Enable SSE-S3 or SSE-KMS default encryption.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 2.2.1</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">EBS encryption-by-default disabled</div>
+          <div class="card-resource"><code>ec2:account</code></div>
+          <div class="card-detail">Account-level EBS encryption-by-default off.</div>
+          <div class="card-fix">→ Enable EBS encryption-by-default in every region.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 2.3.1</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">RDS instance storage not encrypted</div>
+          <div class="card-resource"><code>rds:db/billing-prod</code></div>
+          <div class="card-detail">StorageEncrypted=false on RDS instance.</div>
+          <div class="card-fix">→ Enable storage encryption (snapshot+restore).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 3.5</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">AWS Config disabled in account</div>
+          <div class="card-resource"><code>config:account</code></div>
+          <div class="card-detail">ConfigurationRecorder is not active.</div>
+          <div class="card-fix">→ Enable AWS Config in all regions with global resources.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 5.4</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Default security group allows traffic</div>
+          <div class="card-resource"><code>sg:sg-default</code></div>
+          <div class="card-detail">Default SG should have zero rules.</div>
+          <div class="card-fix">→ Strip all rules from default SGs in every VPC.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 5.5</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">VPC flow logs disabled</div>
+          <div class="card-resource"><code>vpc:vpc-1</code></div>
+          <div class="card-detail">No FlowLogs configured for VPC.</div>
+          <div class="card-fix">→ Enable VPC flow logs (REJECT or ALL) to S3/CW.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS AWS 5.6</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Private subnet routed to IGW</div>
+          <div class="card-resource"><code>rtb:rtb-private</code></div>
+          <div class="card-detail">0.0.0.0/0 → IGW from a private subnet.</div>
+          <div class="card-fix">→ Route private subnets via NAT, not IGW.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 1.1</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Entra ID security defaults disabled</div>
+          <div class="card-resource"><code>entra:tenant</code></div>
+          <div class="card-detail">Security defaults off and no equivalent CA policy.</div>
+          <div class="card-fix">→ Enable Security Defaults or block legacy auth via CA.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 1.10</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Legacy authentication not blocked</div>
+          <div class="card-resource"><code>entra:tenant/ca</code></div>
+          <div class="card-detail">Legacy/basic auth still allowed (POP, IMAP, SMTP).</div>
+          <div class="card-fix">→ Create CA policy to block legacy authentication.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 2.1</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Defender for Servers not Standard tier</div>
+          <div class="card-resource"><code>defender:plan/VirtualMachines</code></div>
+          <div class="card-detail">Free tier — no MDE/threat protection on VMs.</div>
+          <div class="card-fix">→ Upgrade Defender for Servers to Plan 2.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 2.3</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Defender for SQL disabled</div>
+          <div class="card-resource"><code>defender:plan/SqlServers</code></div>
+          <div class="card-detail">No threat detection on SQL Server / SQL DB.</div>
+          <div class="card-fix">→ Enable Defender for SQL Servers + SQL on machines.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 3.1</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Storage account allows HTTP</div>
+          <div class="card-resource"><code>storage:stcontosoprod</code></div>
+          <div class="card-detail">supportsHttpsTrafficOnly=false.</div>
+          <div class="card-fix">→ Set supportsHttpsTrafficOnly=true.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 3.7</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Storage default firewall action is Allow</div>
+          <div class="card-resource"><code>storage:stcontosoprod</code></div>
+          <div class="card-detail">networkAcls.defaultAction != Deny.</div>
+          <div class="card-fix">→ Default-deny + allowlist trusted vnets/services.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 4.1</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">SQL Server auditing disabled</div>
+          <div class="card-resource"><code>sql:sql-billing</code></div>
+          <div class="card-detail">Auditing extension is off.</div>
+          <div class="card-fix">→ Enable auditing to Storage / Log Analytics.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 4.3</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">SQL DB transparent data encryption off</div>
+          <div class="card-resource"><code>sqldb:billing</code></div>
+          <div class="card-detail">TDE disabled on user database.</div>
+          <div class="card-fix">→ Enable TDE on every SQL database.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 4.5</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">PostgreSQL SSL enforcement disabled</div>
+          <div class="card-resource"><code>postgres:pg-app</code></div>
+          <div class="card-detail">sslEnforcement=Disabled.</div>
+          <div class="card-fix">→ Set sslEnforcement=Enabled (TLS1.2+).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 4.8</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">SQL Server public network access enabled</div>
+          <div class="card-resource"><code>sql:sql-billing</code></div>
+          <div class="card-detail">publicNetworkAccess=Enabled.</div>
+          <div class="card-fix">→ Disable public network access; use Private Link.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 5.1</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Subscription activity log not exported</div>
+          <div class="card-resource"><code>subscription:activity-log</code></div>
+          <div class="card-detail">No diagnostic setting forwarding to LA/Storage/EH.</div>
+          <div class="card-fix">→ Export activity log to Log Analytics + Storage.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 7.1</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">VM OS disk not encrypted</div>
+          <div class="card-resource"><code>vm:vm-app01</code></div>
+          <div class="card-detail">ADE/SSE-with-CMK not configured for OS disk.</div>
+          <div class="card-fix">→ Enable Azure Disk Encryption + CMK.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ff9500">HIGH</span>
+            <span class="ctrl">CIS Azure 7.2</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">VM data disk not encrypted</div>
+          <div class="card-resource"><code>vm:vm-app01</code></div>
+          <div class="card-detail">One or more attached data disks unencrypted.</div>
+          <div class="card-fix">→ Encrypt all data disks via ADE / CMK.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 1.8</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Password policy minimum length &lt; 14</div>
+          <div class="card-resource"><code>iam:password-policy</code></div>
+          <div class="card-detail">Current minimum: 8</div>
+          <div class="card-fix">→ Set MinimumPasswordLength to 14 or greater.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 1.12</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">IAM credentials unused &gt; 90 days</div>
+          <div class="card-resource"><code>iam:user/deploy.bot</code></div>
+          <div class="card-detail">Last used 220 days ago.</div>
+          <div class="card-fix">→ Disable or delete unused credentials.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 1.15</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">IAM user has inline policies (use groups)</div>
+          <div class="card-resource"><code>iam:user/deploy.bot</code></div>
+          <div class="card-detail">Inline policies: 1</div>
+          <div class="card-fix">→ Move policies to a group, attach via group membership.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 1.20</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">IAM Access Analyzer not enabled</div>
+          <div class="card-resource"><code>access-analyzer:account</code></div>
+          <div class="card-detail">Access Analyzer disabled for this account.</div>
+          <div class="card-fix">→ Enable IAM Access Analyzer in every active region.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 3.2</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">CloudTrail log validation disabled</div>
+          <div class="card-resource"><code>cloudtrail:trail/default-trail</code></div>
+          <div class="card-detail">EnableLogFileValidation=false.</div>
+          <div class="card-fix">→ Set EnableLogFileValidation=true for tamper-evidence.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 3.4</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">CloudTrail not integrated with CloudWatch Logs</div>
+          <div class="card-resource"><code>cloudtrail:trail/default-trail</code></div>
+          <div class="card-detail">CloudWatchLogsLogGroupArn unset.</div>
+          <div class="card-fix">→ Send trail events to CloudWatch for alerting.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 3.7</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">KMS CMK rotation disabled</div>
+          <div class="card-resource"><code>kms:key/alias/app</code></div>
+          <div class="card-detail">Annual key rotation disabled on customer CMK.</div>
+          <div class="card-fix">→ Enable automatic key rotation.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 4.2</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">No alarm for console sign-in without MFA</div>
+          <div class="card-resource"><code>cloudwatch:filter</code></div>
+          <div class="card-detail">Metric filter &#x27;ConsoleSignInWithoutMFA&#x27; missing or unsubscribed.</div>
+          <div class="card-fix">→ Create metric filter+alarm for console sign-in without MFA (SNS topic).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 4.4</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">No alarm for IAM policy changes</div>
+          <div class="card-resource"><code>cloudwatch:filter</code></div>
+          <div class="card-detail">Metric filter &#x27;IAMPolicyChanges&#x27; missing or unsubscribed.</div>
+          <div class="card-fix">→ Create metric filter+alarm for IAM policy changes (SNS topic).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 4.5</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">No alarm for CloudTrail config changes</div>
+          <div class="card-resource"><code>cloudwatch:filter</code></div>
+          <div class="card-detail">Metric filter &#x27;CloudTrailConfigChanges&#x27; missing or unsubscribed.</div>
+          <div class="card-fix">→ Create metric filter+alarm for CloudTrail config changes (SNS topic).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 4.6</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">No alarm for console auth failures</div>
+          <div class="card-resource"><code>cloudwatch:filter</code></div>
+          <div class="card-detail">Metric filter &#x27;ConsoleAuthFailures&#x27; missing or unsubscribed.</div>
+          <div class="card-fix">→ Create metric filter+alarm for console auth failures (SNS topic).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 4.7</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">No alarm for KMS CMK disable/delete</div>
+          <div class="card-resource"><code>cloudwatch:filter</code></div>
+          <div class="card-detail">Metric filter &#x27;DisableOrDeleteCMK&#x27; missing or unsubscribed.</div>
+          <div class="card-fix">→ Create metric filter+alarm for KMS CMK disable/delete (SNS topic).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS AWS 4.8</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">No alarm for S3 bucket policy changes</div>
+          <div class="card-resource"><code>cloudwatch:filter</code></div>
+          <div class="card-detail">Metric filter &#x27;S3BucketPolicyChanges&#x27; missing or unsubscribed.</div>
+          <div class="card-fix">→ Create metric filter+alarm for S3 bucket policy changes (SNS topic).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 1.5</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Anyone can invite guests</div>
+          <div class="card-resource"><code>entra:tenant/external</code></div>
+          <div class="card-detail">GuestInviteSettings is set to Everyone.</div>
+          <div class="card-fix">→ Restrict to admins or specific roles only.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 1.22</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Permanent privileged role assignment</div>
+          <div class="card-resource"><code>entra:user/ga@contoso.com</code></div>
+          <div class="card-detail">Privileged role assigned permanently (no PIM).</div>
+          <div class="card-fix">→ Use Privileged Identity Management (eligible/JIT).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 1.22</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Permanent privileged role assignment</div>
+          <div class="card-resource"><code>entra:user/billing-admin@contoso.com</code></div>
+          <div class="card-detail">Privileged role assigned permanently (no PIM).</div>
+          <div class="card-fix">→ Use Privileged Identity Management (eligible/JIT).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 1.25</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Subscription has 6 Owners (&gt;3)</div>
+          <div class="card-resource"><code>subscription:rbac</code></div>
+          <div class="card-detail">6 principals hold Owner role.</div>
+          <div class="card-fix">→ Reduce to ≤3 break-glass + use Contributor for ops.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 2.2</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Defender for Storage disabled</div>
+          <div class="card-resource"><code>defender:plan/StorageAccounts</code></div>
+          <div class="card-detail">Free tier — no malware/anomaly detection on blobs.</div>
+          <div class="card-fix">→ Enable Defender for Storage v2.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 2.4</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Defender for Key Vault disabled</div>
+          <div class="card-resource"><code>defender:plan/KeyVaults</code></div>
+          <div class="card-detail">No anomaly detection on key/secret access.</div>
+          <div class="card-fix">→ Enable Defender for Key Vault.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 2.5</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Defender for App Service disabled</div>
+          <div class="card-resource"><code>defender:plan/AppServices</code></div>
+          <div class="card-detail">No web-app threat detection or runtime visibility.</div>
+          <div class="card-fix">→ Enable Defender for App Service.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 3.9</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Storage account minimum TLS &lt; 1.2</div>
+          <div class="card-resource"><code>storage:stcontosoprod</code></div>
+          <div class="card-detail">minimumTlsVersion=1.0</div>
+          <div class="card-fix">→ Set minimumTlsVersion=TLS1_2.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 3.15</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Blob soft delete &lt;7 days or disabled</div>
+          <div class="card-resource"><code>storage:stcontosoprod</code></div>
+          <div class="card-detail">Soft delete: {&#x27;enabled&#x27;: False, &#x27;retention_days&#x27;: 0}</div>
+          <div class="card-fix">→ Enable soft delete with ≥7 day retention.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 4.4</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">SQL Server has no Entra ID admin</div>
+          <div class="card-resource"><code>sql:sql-billing</code></div>
+          <div class="card-detail">Only SQL auth — no Entra ID administrator.</div>
+          <div class="card-fix">→ Configure Entra ID admin (group) on SQL Server.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 5.2</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Key Vault diagnostic logs disabled</div>
+          <div class="card-resource"><code>kv:kv-prod</code></div>
+          <div class="card-detail">AuditEvent diagnostic setting missing.</div>
+          <div class="card-fix">→ Enable AuditEvent → Log Analytics.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 5.3</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Missing activity log alerts: 2</div>
+          <div class="card-resource"><code>monitor:alerts</code></div>
+          <div class="card-detail">Missing: [&#x27;policy-assignments&#x27;, &#x27;rbac-changes&#x27;]</div>
+          <div class="card-fix">→ Create activity log alerts for control-plane changes.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 6.4</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">NSG flow logs disabled</div>
+          <div class="card-resource"><code>nsg:nsg-web</code></div>
+          <div class="card-detail">Flow logs not configured.</div>
+          <div class="card-fix">→ Enable flow logs (v2) → Storage + Traffic Analytics.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 7.4</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">VM missing endpoint protection</div>
+          <div class="card-resource"><code>vm:vm-app01</code></div>
+          <div class="card-detail">No MDE/AV agent reported.</div>
+          <div class="card-fix">→ Deploy Defender for Endpoint via auto-provision.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#ffcc00">MEDIUM</span>
+            <span class="ctrl">CIS Azure 7.5</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Linux VM allows password SSH login</div>
+          <div class="card-resource"><code>vm:vm-app01</code></div>
+          <div class="card-detail">PasswordAuthentication enabled.</div>
+          <div class="card-fix">→ Disable password auth; require SSH keys / Bastion.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS AWS 1.9</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Password reuse prevention &lt; 24</div>
+          <div class="card-resource"><code>iam:password-policy</code></div>
+          <div class="card-detail">Current: 0</div>
+          <div class="card-fix">→ Set PasswordReusePrevention to 24.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS AWS 1.17</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Support role for incident handling missing</div>
+          <div class="card-resource"><code>iam:role/AWSSupportAccess</code></div>
+          <div class="card-detail">No role with AWSSupportAccess managed policy.</div>
+          <div class="card-fix">→ Create role with AWSSupportAccess for incident response.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS AWS 1.24</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">Long-lived IAM users despite Identity Center</div>
+          <div class="card-resource"><code>iam:account</code></div>
+          <div class="card-detail">3 IAM users alongside SSO.</div>
+          <div class="card-fix">→ Migrate humans to SSO; delete static IAM user logins.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS AWS 2.1.2</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">S3 bucket MFA delete disabled</div>
+          <div class="card-resource"><code>s3:bucket/customer-data-prod</code></div>
+          <div class="card-detail">MFA delete is not enabled on versioned bucket.</div>
+          <div class="card-fix">→ Enable MFA delete for buckets with sensitive data.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS AWS 2.1.2</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">S3 bucket MFA delete disabled</div>
+          <div class="card-resource"><code>s3:bucket/ct-trail-archive</code></div>
+          <div class="card-detail">MFA delete is not enabled on versioned bucket.</div>
+          <div class="card-fix">→ Enable MFA delete for buckets with sensitive data.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS AWS 3.6</span>
+            <span class="cloud">AWS</span>
+          </div>
+          <div class="card-title">S3 bucket access logging disabled</div>
+          <div class="card-resource"><code>s3:bucket/customer-data-prod</code></div>
+          <div class="card-detail">Server access logging not configured.</div>
+          <div class="card-fix">→ Enable access logging to a separate audit bucket.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 1.8</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Users can register applications</div>
+          <div class="card-resource"><code>entra:tenant/app-reg</code></div>
+          <div class="card-detail">UsersCanRegisterApplications=Yes.</div>
+          <div class="card-fix">→ Set to No; delegate via app-developer role.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 1.23</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Privileged role access reviews disabled</div>
+          <div class="card-resource"><code>entra:tenant/access-review</code></div>
+          <div class="card-detail">No periodic access review on Directory Roles.</div>
+          <div class="card-fix">→ Enable PIM access reviews for all Directory Roles.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 2.6</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Auto-provisioning of AMA disabled</div>
+          <div class="card-resource"><code>defender:auto-provisioning</code></div>
+          <div class="card-detail">Azure Monitor Agent not auto-deployed.</div>
+          <div class="card-fix">→ Enable auto-provisioning for AMA + dependency agent.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 3.3</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Storage logging incomplete (Read/Write)</div>
+          <div class="card-resource"><code>storage:stcontosoprod</code></div>
+          <div class="card-detail">Diagnostic logging not capturing R/W ops.</div>
+          <div class="card-fix">→ Enable Read+Write+Delete in diagnostic settings.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 3.8</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Trusted Microsoft services bypass off</div>
+          <div class="card-resource"><code>storage:stcontosoprod</code></div>
+          <div class="card-detail">Bypass=None — breaks Azure Backup/Monitor/etc.</div>
+          <div class="card-fix">→ Set Bypass=AzureServices on networkAcls.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 3.10</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Storage encryption uses Microsoft-managed keys</div>
+          <div class="card-resource"><code>storage:stcontosoprod</code></div>
+          <div class="card-detail">Encryption keySource is Microsoft.Storage.</div>
+          <div class="card-fix">→ Use Customer-Managed Keys (Key Vault).</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 5.4</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Log Analytics retention &lt; 365 days</div>
+          <div class="card-resource"><code>la:la-prod</code></div>
+          <div class="card-detail">Retention: 30 days.</div>
+          <div class="card-fix">→ Set retention to ≥365 days for compliance.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 6.3</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Network Watcher disabled</div>
+          <div class="card-resource"><code>network-watcher:region</code></div>
+          <div class="card-detail">Network Watcher not enabled in active region.</div>
+          <div class="card-fix">→ Enable Network Watcher per region.</div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="badge" style="background:#34d399">LOW</span>
+            <span class="ctrl">CIS Azure 6.5</span>
+            <span class="cloud">AZURE</span>
+          </div>
+          <div class="card-title">Unrestricted UDP egress to Internet</div>
+          <div class="card-resource"><code>nsg:nsg-web</code></div>
+          <div class="card-detail">Rule allow-udp-egress allows UDP egress *.</div>
+          <div class="card-fix">→ Restrict UDP egress to required destinations.</div>
+        </div></div>
+</body></html>

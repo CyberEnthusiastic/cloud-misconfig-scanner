@@ -1,0 +1,119 @@
+{
+  "entra": {
+    "security_defaults_enabled": false,
+    "guest_invite_setting": "Everyone",
+    "user_can_create_apps": true,
+    "block_legacy_auth": false,
+    "access_review_enabled": false
+  },
+  "entra_users": [
+    {"upn": "ga@contoso.com", "is_privileged": true, "mfa_enforced": false, "assignment_type": "permanent"},
+    {"upn": "billing-admin@contoso.com", "is_privileged": true, "mfa_enforced": true, "assignment_type": "permanent"}
+  ],
+  "subscription": {
+    "owner_count": 6,
+    "activity_log_export": false
+  },
+  "defender": {
+    "plans": {
+      "VirtualMachines": "Free",
+      "StorageAccounts": "Free",
+      "SqlServers": "Free",
+      "KeyVaults": "Free",
+      "AppServices": "Free"
+    },
+    "auto_provisioning_ama": false
+  },
+  "storage_accounts": [
+    {
+      "name": "stcontosoprod",
+      "supports_https_traffic_only": false,
+      "blob_logging_read": false,
+      "blob_logging_write": false,
+      "allow_blob_public_access": true,
+      "network_default_action": "Allow",
+      "bypass_azure_services": false,
+      "minimum_tls_version": "1.0",
+      "encryption_keysource_kv": false,
+      "blob_soft_delete": {"enabled": false, "retention_days": 0}
+    },
+    {
+      "name": "stcontosoaudit",
+      "supports_https_traffic_only": true,
+      "blob_logging_read": true,
+      "blob_logging_write": true,
+      "allow_blob_public_access": false,
+      "network_default_action": "Deny",
+      "bypass_azure_services": true,
+      "minimum_tls_version": "1.2",
+      "encryption_keysource_kv": true,
+      "blob_soft_delete": {"enabled": true, "retention_days": 14}
+    }
+  ],
+  "sql_servers": [
+    {
+      "name": "sql-billing",
+      "auditing_enabled": false,
+      "aad_admin_set": false,
+      "public_network_access": true
+    }
+  ],
+  "sql_databases": [
+    {"name": "billing", "tde_enabled": false}
+  ],
+  "postgres_servers": [
+    {"name": "pg-app", "ssl_enforcement": false}
+  ],
+  "key_vaults": [
+    {"name": "kv-prod", "diagnostics_enabled": false}
+  ],
+  "log_analytics_workspaces": [
+    {"name": "la-prod", "retention_days": 30}
+  ],
+  "monitor": {
+    "expected_alert_rules": ["nsg-changes", "policy-assignments", "rbac-changes"],
+    "alert_rules": ["nsg-changes"],
+    "network_watcher_enabled": false
+  },
+  "nsgs": [
+    {
+      "name": "nsg-web",
+      "rules": [
+        {
+          "name": "allow-ssh",
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "destination_port_range": "22",
+          "source_address_prefix": "*"
+        },
+        {
+          "name": "allow-rdp",
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "destination_port_range": "3389",
+          "source_address_prefix": "Internet"
+        },
+        {
+          "name": "allow-udp-egress",
+          "direction": "Outbound",
+          "access": "Allow",
+          "protocol": "UDP",
+          "destination_address_prefix": "*"
+        }
+      ],
+      "flow_logs_enabled": false
+    }
+  ],
+  "vms": [
+    {
+      "name": "vm-app01",
+      "os_type": "Linux",
+      "os_disk_encrypted": false,
+      "data_disks": [{"encrypted": false}],
+      "endpoint_protection_installed": false,
+      "password_auth_enabled": true
+    }
+  ]
+}

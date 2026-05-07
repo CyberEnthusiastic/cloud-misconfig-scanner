@@ -1,0 +1,109 @@
+{
+  "iam_users": [
+    {
+      "user_name": "<root>",
+      "mfa_enabled": false,
+      "access_keys": [{"id": "AKIA...EXAMPLE1", "age_days": 412}]
+    },
+    {
+      "user_name": "deploy.bot",
+      "mfa_enabled": false,
+      "days_since_last_use": 220,
+      "access_keys": [{"id": "AKIA...EXAMPLE2", "age_days": 380}],
+      "inline_policies": ["legacy-deploy"],
+      "attached_managed_policies": ["AdministratorAccess"]
+    },
+    {
+      "user_name": "app.svc",
+      "mfa_enabled": true,
+      "days_since_last_use": 4,
+      "access_keys": [{"id": "AKIA...EXAMPLE3", "age_days": 32}],
+      "attached_managed_policies": ["ReadOnlyAccess"]
+    }
+  ],
+  "iam_users_count": 3,
+  "iam_password_policy": {
+    "minimum_password_length": 8,
+    "password_reuse_prevention": 0
+  },
+  "iam_policies": [
+    {
+      "name": "legacy-admin",
+      "document": {
+        "Statement": [
+          {"Effect": "Allow", "Action": "*", "Resource": "*"}
+        ]
+      }
+    }
+  ],
+  "iam_roles": [],
+  "acm_certificates": [
+    {"arn": "arn:aws:acm:us-east-1:111:certificate/old", "expired": true, "days_until_expiry": -42}
+  ],
+  "access_analyzer_enabled": false,
+  "identity_center_enabled": true,
+  "s3_buckets": [
+    {
+      "name": "customer-data-prod",
+      "default_encryption": false,
+      "mfa_delete": false,
+      "public_access_block": {"block_public_acls": false},
+      "server_access_logging": false,
+      "acl_public": true,
+      "policy_public": false
+    },
+    {
+      "name": "ct-trail-archive",
+      "default_encryption": true,
+      "mfa_delete": false,
+      "public_access_block": {"block_public_acls": true},
+      "server_access_logging": true
+    }
+  ],
+  "ebs_encryption_default": false,
+  "rds_instances": [
+    {"db_id": "billing-prod", "storage_encrypted": false, "publicly_accessible": true}
+  ],
+  "cloudtrails": [
+    {
+      "name": "default-trail",
+      "is_multi_region": false,
+      "is_logging": true,
+      "log_file_validation": false,
+      "s3_bucket": "ct-trail-archive",
+      "cloudwatch_logs_arn": null
+    }
+  ],
+  "aws_config_enabled": false,
+  "kms_keys": [
+    {"id": "alias/app", "manageable": true, "rotation_enabled": false}
+  ],
+  "cloudwatch_metric_filters": [
+    {"name": "UnauthorizedAPICalls", "alarm_subscribed": true},
+    {"name": "RootAccountUsage", "alarm_subscribed": true}
+  ],
+  "security_groups": [
+    {
+      "id": "sg-aaa1",
+      "name": "web-public",
+      "ingress": [
+        {"from_port": 22, "cidr_blocks": ["0.0.0.0/0"]},
+        {"from_port": 3389, "cidr_blocks": ["0.0.0.0/0"]}
+      ]
+    },
+    {
+      "id": "sg-default",
+      "name": "default",
+      "ingress": [{"from_port": 0, "cidr_blocks": ["10.0.0.0/8"]}],
+      "egress": [{"to_port": 65535, "cidr_blocks": ["0.0.0.0/0"]}]
+    }
+  ],
+  "vpcs": [{"id": "vpc-1", "flow_logs_enabled": false}],
+  "route_tables": [
+    {
+      "id": "rtb-private",
+      "attached_to_private_subnet": true,
+      "routes": [{"destination": "0.0.0.0/0", "target": "igw-abc"}]
+    }
+  ]
+}
